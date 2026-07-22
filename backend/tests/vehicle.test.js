@@ -172,3 +172,128 @@ describe("POST /api/vehicles", () => {
         expect(vehicle).toHaveProperty("quantity", 3);
     });
 });
+
+describe("GET /api/vehicles", () => {
+    let userToken;
+
+    beforeEach(async () => {
+        await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "Test User",
+                email: "user@example.com",
+                password: "password123"
+            });
+
+        const loginRes = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "user@example.com",
+                password: "password123"
+            });
+
+        userToken = loginRes.body.token;
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const response = await request(app)
+            .get("/api/vehicles");
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return an empty array when no vehicles exist", async () => {
+        const response = await request(app)
+            .get("/api/vehicles")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(Array.isArray(response.body.vehicles)).toBe(true);
+        expect(response.body.vehicles.length).toBe(0);
+    });
+
+    it("should allow an authenticated user to retrieve all vehicles successfully", async () => {
+        const adminPasswordHash = await bcrypt.hash("adminPass123", 10);
+        await User.create({
+            name: "Admin User",
+            email: "admin_get@example.com",
+            passwordHash: adminPasswordHash,
+            role: "admin"
+        });
+
+        const adminLoginRes = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "admin_get@example.com",
+                password: "adminPass123"
+            });
+        const adminToken = adminLoginRes.body.token;
+
+        await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({
+                make: "Ford",
+                model: "Mustang",
+                category: "Sports",
+                price: 55000,
+                quantity: 2
+            });
+
+        const response = await request(app)
+            .get("/api/vehicles")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(Array.isArray(response.body.vehicles)).toBe(true);
+        expect(response.body.vehicles.length).toBe(1);
+    });
+
+    it("should return all available vehicles containing id, make, model, category, price, and quantity", async () => {
+        const adminPasswordHash = await bcrypt.hash("adminPass123", 10);
+        await User.create({
+            name: "Admin User",
+            email: "admin_get_fields@example.com",
+            passwordHash: adminPasswordHash,
+            role: "admin"
+        });
+
+        const adminLoginRes = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "admin_get_fields@example.com",
+                password: "adminPass123"
+            });
+        const adminToken = adminLoginRes.body.token;
+
+        await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({
+                make: "Tesla",
+                model: "Model 3",
+                category: "Electric",
+                price: 40000,
+                quantity: 4
+            });
+
+        const response = await request(app)
+            .get("/api/vehicles")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        const vehicles = response.body.vehicles || response.body;
+        expect(Array.isArray(vehicles)).toBe(true);
+        expect(vehicles.length).toBeGreaterThan(0);
+        const vehicle = vehicles[0];
+        expect(vehicle).toHaveProperty("id");
+        expect(vehicle).toHaveProperty("make", "Tesla");
+        expect(vehicle).toHaveProperty("model", "Model 3");
+        expect(vehicle).toHaveProperty("category", "Electric");
+        expect(vehicle).toHaveProperty("price", 40000);
+        expect(vehicle).toHaveProperty("quantity", 4);
+    });
+});
+

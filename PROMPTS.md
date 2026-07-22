@@ -143,3 +143,27 @@ Requirements:
 - Return only the modified files.
 
 # Prompt 8
+Write Jest + Supertest integration tests for the Get All Vehicles endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+GET /api/vehicles
+
+Scenarios:
+1. Authenticated user can retrieve all vehicles successfully.
+2. Request without JWT returns 401.
+3. Returns an empty array when no vehicles exist.
+4. Returns all available vehicles with:
+   - id
+   - make
+   - model
+   - category
+   - price
+   - quantity
+
+# Prompt 9
