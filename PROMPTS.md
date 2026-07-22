@@ -85,3 +85,16 @@ Requirements:
 - Use bcrypt.compare() for password verification.
 - Use jsonwebtoken with process.env.JWT_SECRET.
 - Return only the files that need to be added or modified.
+
+# Prompt 4
+
+Review my Login implementation and suggest a refactoring.
+
+Requirements:
+- Keep all existing tests passing.
+- Do not change API responses.
+- Do not change routes.
+- Do not change the project architecture.
+- Do not introduce Repository Pattern, DTOs, or unnecessary helper classes.
+- Improve readability, remove duplication, and improve maintainability only.
+- Return only the files that should change.

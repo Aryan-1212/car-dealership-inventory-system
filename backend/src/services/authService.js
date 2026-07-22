@@ -3,6 +3,21 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import AppError from "../utils/AppError.js";
 
+const formatUserResponse = (user) => ({
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role
+});
+
+const generateToken = (user) => {
+    return jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
+    );
+};
+
 export const registerUser = async ({ name, email, password }) => {
     if (!name || !email || !password) {
         throw new AppError("All fields are required", 400);
@@ -22,12 +37,7 @@ export const registerUser = async ({ name, email, password }) => {
         passwordHash
     });
 
-    return {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-    };
+    return formatUserResponse(user);
 };
 
 export const loginUser = async ({ email, password }) => {
@@ -36,28 +46,15 @@ export const loginUser = async ({ email, password }) => {
     }
 
     const user = await User.findOne({ email });
-    if (!user) {
-        throw new AppError("Invalid credentials", 401);
-    }
+    const isPasswordValid = user && (await bcrypt.compare(password, user.passwordHash));
 
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
         throw new AppError("Invalid credentials", 401);
     }
 
-    const token = jwt.sign(
-        { id: user._id, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
-
     return {
-        token,
-        user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role
-        }
+        token: generateToken(user),
+        user: formatUserResponse(user)
     };
 };
+
