@@ -245,20 +245,22 @@ const Admin = () => {
           <h1 className="text-3xl font-display font-bold text-chalk uppercase tracking-wide">Admin Dashboard</h1>
           <p className="text-slate-400 mt-1">Manage inventory, stock, and vehicle details</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 md:mt-0">
-          <span className="text-dealer-brass font-mono">Hello, Admin {user?.name}</span>
-          <button 
-            onClick={() => navigate('/')}
-            className="px-4 py-2 bg-warehouse-slate border border-slate-600 text-chalk rounded-sm font-mono font-bold uppercase tracking-wide hover:bg-slate-700 transition-colors"
-          >
-            View Store
-          </button>
-          <button 
-            onClick={logout}
-            className="px-4 py-2 bg-showroom-navy border border-slate-700 text-slate-300 rounded-sm font-mono font-bold uppercase tracking-wide hover:text-white hover:bg-slate-800 transition-colors"
-          >
-            Logout
-          </button>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-4 md:mt-0">
+          <span className="text-dealer-brass font-mono">Hello, {user?.name}</span>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button 
+              onClick={() => navigate('/')}
+              className="flex-1 sm:flex-none px-4 py-2 bg-warehouse-slate border border-slate-600 text-chalk rounded-sm font-mono font-bold uppercase tracking-wide hover:bg-slate-700 transition-colors whitespace-nowrap"
+            >
+              View Store
+            </button>
+            <button 
+              onClick={logout}
+              className="flex-1 sm:flex-none px-4 py-2 bg-showroom-navy border border-slate-700 text-slate-300 rounded-sm font-mono font-bold uppercase tracking-wide hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 

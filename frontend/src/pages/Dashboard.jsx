@@ -87,22 +87,24 @@ const Dashboard = () => {
           <h1 className="text-4xl font-display font-bold text-showroom-navy uppercase tracking-tight">Vehicle Inventory</h1>
           <p className="text-warehouse-slate mt-1">Browse and purchase vehicles</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 md:mt-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-4 md:mt-0">
           <span className="text-showroom-navy font-medium">Hello, {user?.name || 'User'}</span>
-          {user?.role === 'admin' && (
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {user?.role === 'admin' && (
+              <button 
+                onClick={() => navigate('/admin')}
+                className="flex-1 sm:flex-none px-4 py-2 bg-showroom-navy text-chalk rounded-sm font-display font-bold uppercase tracking-wide hover:bg-warehouse-slate transition-colors whitespace-nowrap"
+              >
+                Admin Panel
+              </button>
+            )}
             <button 
-              onClick={() => navigate('/admin')}
-              className="px-4 py-2 bg-showroom-navy text-chalk rounded-sm font-display font-bold uppercase tracking-wide hover:bg-warehouse-slate transition-colors"
+              onClick={logout}
+              className="flex-1 sm:flex-none px-4 py-2 bg-warehouse-slate/10 text-showroom-navy rounded-sm font-display font-bold uppercase tracking-wide hover:bg-warehouse-slate/20 transition-colors whitespace-nowrap"
             >
-              Admin Panel
+              Logout
             </button>
-          )}
-          <button 
-            onClick={logout}
-            className="px-4 py-2 bg-warehouse-slate/10 text-showroom-navy rounded-sm font-display font-bold uppercase tracking-wide hover:bg-warehouse-slate/20 transition-colors"
-          >
-            Logout
-          </button>
+          </div>
         </div>
       </header>
 
