@@ -545,3 +545,52 @@ Requirements:
   deleting one vehicle shouldn't block interacting with others).
 - Style with Tailwind, consistent with DashboardPage's visual style.
 - Do not modify AuthContext, client.js, DashboardPage, or routing.
+
+# Prompt 32
+Update tailwind.config.js to add a custom design system for a car
+dealership inventory app:
+
+Colors:
+- showroom-navy: #12203A
+- warehouse-slate: #1B2A47
+- dealer-brass: #C9A25D
+- chalk: #E9ECF2
+- stock-green: #4C9A6A
+- sold-red: #D64545
+
+Fonts (load via Google Fonts in index.html or a font import):
+- display: "Oswald", sans-serif (for headers, bold, condensed)
+- sans: "Inter", sans-serif (body text)
+- mono: "JetBrains Mono", monospace (for prices, quantities, IDs)
+
+Add these as extended theme values (colors, fontFamily) so they can
+be used as Tailwind utility classes (e.g. bg-showroom-navy,
+font-display, text-dealer-brass).
+
+Don't apply these to any components yet — just the config and font
+loading.
+
+# Prompt 33
+Apply this design system to LoginPage, RegisterPage, DashboardPage,
+and AdminPage using the new Tailwind tokens (showroom-navy,
+warehouse-slate, dealer-brass, chalk, stock-green, sold-red, and the
+display/sans/mono font families).
+
+Specific direction:
+- DashboardPage: vehicle cards should look like showroom window
+  stickers — make/model in font-display, price in font-mono styled
+  like a price tag, quantity shown as a small badge. When quantity
+  is 0, replace the disabled button with a diagonal "SOLD OUT" stamp
+  banner across the top corner of the card instead of just greying
+  out the button.
+- The search/filter bar should feel like a lot directory console —
+  darker background, mono font for field labels.
+- AdminPage should feel more utilitarian/plain than the customer
+  dashboard — same palette, but simpler, denser, tool-like — to
+  visually distinguish staff tools from the customer-facing view.
+- LoginPage/RegisterPage: centered card on the showroom-navy
+  background, dealer-brass accent on the primary button.
+- Keep all existing functionality, state, and API calls completely
+  unchanged — this is a styling pass only.
+- Ensure text contrast is readable (chalk on navy/slate, not brass
+  on brass) and everything stays responsive on mobile.

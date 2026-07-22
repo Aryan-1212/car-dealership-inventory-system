@@ -54,24 +54,24 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
 
   if (isEditing) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-indigo-200 p-5 overflow-hidden flex flex-col">
-        <h3 className="text-lg font-bold text-slate-800 mb-3">Edit Vehicle</h3>
+      <div className="bg-warehouse-slate border border-dealer-brass p-5 flex flex-col rounded-none shadow-xl">
+        <h3 className="text-lg font-mono font-bold text-dealer-brass mb-3 uppercase">Edit Vehicle</h3>
         {updateError && (
-          <div className="mb-3 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-100">
+          <div className="mb-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
             {updateError}
           </div>
         )}
         <form onSubmit={handleEditSubmit} className="space-y-3 flex-1 flex flex-col">
-          <div className="grid grid-cols-2 gap-3">
-            <input type="text" placeholder="Make" value={editForm.make} onChange={e => setEditForm({...editForm, make: e.target.value})} className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500 outline-none" required />
-            <input type="text" placeholder="Model" value={editForm.model} onChange={e => setEditForm({...editForm, model: e.target.value})} className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500 outline-none" required />
-            <input type="text" placeholder="Category" value={editForm.category} onChange={e => setEditForm({...editForm, category: e.target.value})} className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500 outline-none" required />
-            <input type="number" placeholder="Price" value={editForm.price} onChange={e => setEditForm({...editForm, price: e.target.value})} className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500 outline-none" required min="0.01" step="0.01" />
-            <input type="number" placeholder="Quantity" value={editForm.quantity} onChange={e => setEditForm({...editForm, quantity: e.target.value})} className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500 outline-none" required min="0" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Make" value={editForm.make} onChange={e => setEditForm({...editForm, make: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required />
+            <input type="text" placeholder="Model" value={editForm.model} onChange={e => setEditForm({...editForm, model: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required />
+            <input type="text" placeholder="Category" value={editForm.category} onChange={e => setEditForm({...editForm, category: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required />
+            <input type="number" placeholder="Price" value={editForm.price} onChange={e => setEditForm({...editForm, price: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required min="0.01" step="0.01" />
+            <input type="number" placeholder="Quantity" value={editForm.quantity} onChange={e => setEditForm({...editForm, quantity: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required min="0" />
           </div>
           <div className="flex gap-2 mt-auto pt-4">
-            <button type="button" onClick={handleCancelEdit} disabled={updateLoading} className="flex-1 py-1.5 px-3 bg-slate-100 text-slate-700 text-sm font-medium rounded hover:bg-slate-200 transition">Cancel</button>
-            <button type="submit" disabled={updateLoading} className="flex-1 py-1.5 px-3 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
+            <button type="button" onClick={handleCancelEdit} disabled={updateLoading} className="flex-1 py-1.5 px-3 bg-showroom-navy border border-slate-600 text-chalk text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-slate-700 transition">Cancel</button>
+            <button type="submit" disabled={updateLoading} className="flex-1 py-1.5 px-3 bg-dealer-brass text-showroom-navy text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:brightness-110 transition">
               {updateLoading ? 'Saving...' : 'Save'}
             </button>
           </div>
@@ -81,33 +81,33 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-      <div className="p-5 flex-1 border-b border-slate-100">
+    <div className="bg-warehouse-slate border border-slate-600 rounded-none overflow-hidden hover:border-slate-500 transition-colors flex flex-col">
+      <div className="p-4 flex-1 border-b border-slate-700">
         <div className="flex justify-between items-start mb-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-chalk bg-showroom-navy border border-slate-600 px-2.5 py-1 rounded-sm">
             {vehicle.category}
           </span>
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${vehicle.quantity <= 0 ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
+          <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-sm border ${vehicle.quantity <= 0 ? 'bg-sold-red/10 text-sold-red border-sold-red/20' : 'bg-stock-green/10 text-stock-green border-stock-green/20'}`}>
             {vehicle.quantity} in stock
           </span>
         </div>
         
-        <h3 className="text-xl font-bold text-slate-900 mt-2">{vehicle.make} {vehicle.model}</h3>
-        <p className="text-xl font-semibold text-slate-800 mt-1">{formatPrice(vehicle.price)}</p>
+        <h3 className="text-xl font-bold text-chalk mt-3">{vehicle.make} {vehicle.model}</h3>
+        <p className="text-lg font-mono text-dealer-brass mt-1">{formatPrice(vehicle.price)}</p>
 
         {delError && (
-          <div className="mt-3 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-100">
+          <div className="mt-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
             {delError}
           </div>
         )}
         {restockError && (
-          <div className="mt-3 text-sm font-medium text-red-600 bg-red-50 p-2 rounded border border-red-100">
+          <div className="mt-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
             {restockError}
           </div>
         )}
       </div>
 
-      <div className="bg-slate-50 p-4">
+      <div className="bg-showroom-navy/50 p-4">
         {/* Restock Form */}
         <form onSubmit={handleRestockSubmit} className="flex gap-2 mb-3">
           <input 
@@ -115,7 +115,7 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
             placeholder="Amount" 
             value={restockAmount} 
             onChange={(e) => setRestockAmount(e.target.value)}
-            className="w-full px-3 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-emerald-500 outline-none"
+            className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none"
             min="1"
             required
             disabled={restockLoading || delLoading}
@@ -123,7 +123,7 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
           <button 
             type="submit" 
             disabled={restockLoading || delLoading}
-            className="whitespace-nowrap px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded hover:bg-emerald-700 transition disabled:opacity-70"
+            className="whitespace-nowrap px-3 py-1.5 bg-warehouse-slate border border-slate-600 text-chalk text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-slate-700 transition disabled:opacity-70"
           >
             {restockLoading ? '...' : 'Restock'}
           </button>
@@ -133,16 +133,16 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
           <button 
             onClick={() => setIsEditing(true)}
             disabled={delLoading || restockLoading}
-            className="flex-1 py-1.5 px-3 border border-slate-300 text-slate-700 text-sm font-medium rounded hover:bg-slate-100 transition"
+            className="flex-1 py-1.5 px-3 border border-slate-600 bg-showroom-navy text-chalk text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-warehouse-slate transition"
           >
             Edit
           </button>
           <button 
             onClick={() => onDelete(vehicle.id, setDelLoading, setDelError)}
             disabled={delLoading || restockLoading}
-            className="flex-1 py-1.5 px-3 bg-red-50 text-red-600 text-sm font-medium rounded hover:bg-red-100 transition disabled:opacity-70"
+            className="flex-1 py-1.5 px-3 bg-sold-red/10 text-sold-red border border-sold-red/20 text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-sold-red/20 transition disabled:opacity-70"
           >
-            {delLoading ? 'Deleting...' : 'Delete'}
+            {delLoading ? 'Del...' : 'Delete'}
           </button>
         </div>
       </div>
@@ -262,24 +262,24 @@ const Admin = () => {
   if (!isAdmin) return null; // Avoid flicker while redirecting
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <div className="min-h-screen bg-showroom-navy text-chalk font-sans p-6 md:p-8">
       {/* Header */}
-      <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-4 border-b border-slate-200">
+      <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-4 border-b border-warehouse-slate">
         <div>
-          <h1 className="text-3xl font-bold text-indigo-900">Admin Dashboard</h1>
-          <p className="text-slate-500 mt-1">Manage inventory, stock, and vehicle details</p>
+          <h1 className="text-3xl font-display font-bold text-chalk uppercase tracking-wide">Admin Dashboard</h1>
+          <p className="text-slate-400 mt-1">Manage inventory, stock, and vehicle details</p>
         </div>
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
-          <span className="text-slate-600 font-medium">Hello, Admin {user?.name}</span>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4 md:mt-0">
+          <span className="text-dealer-brass font-mono">Hello, Admin {user?.name}</span>
           <button 
             onClick={() => navigate('/')}
-            className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+            className="px-4 py-2 bg-warehouse-slate border border-slate-600 text-chalk rounded-sm font-mono font-bold uppercase tracking-wide hover:bg-slate-700 transition-colors"
           >
             View Store
           </button>
           <button 
             onClick={logout}
-            className="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-medium hover:bg-slate-300 transition-colors"
+            className="px-4 py-2 bg-showroom-navy border border-slate-700 text-slate-300 rounded-sm font-mono font-bold uppercase tracking-wide hover:text-white hover:bg-slate-800 transition-colors"
           >
             Logout
           </button>
@@ -290,48 +290,48 @@ const Admin = () => {
         
         {/* Left Column: Add Vehicle Form */}
         <div className="lg:col-span-1">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 sticky top-6">
-            <h2 className="text-xl font-bold text-slate-800 mb-4">Add New Vehicle</h2>
+          <div className="bg-warehouse-slate p-6 rounded-none border border-slate-600 shadow-xl sticky top-6">
+            <h2 className="text-xl font-mono font-bold text-dealer-brass mb-4 uppercase">Add New Vehicle</h2>
             
             {addSuccess && (
-              <div className="mb-4 text-sm font-medium text-emerald-700 bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+              <div className="mb-4 text-sm font-mono text-stock-green bg-stock-green/10 p-3 rounded-sm border border-stock-green/20">
                 Vehicle added successfully!
               </div>
             )}
             {addError && (
-              <div className="mb-4 text-sm font-medium text-red-600 bg-red-50 p-3 rounded-lg border border-red-100">
+              <div className="mb-4 text-sm font-mono text-sold-red bg-sold-red/10 p-3 rounded-sm border border-sold-red/20">
                 {addError}
               </div>
             )}
 
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Make</label>
-                <input type="text" name="make" value={newVehicle.make} onChange={handleAddChange} required className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" />
+                <label className="block text-xs font-mono font-medium text-chalk/70 uppercase tracking-wider mb-1">Make</label>
+                <input type="text" name="make" value={newVehicle.make} onChange={handleAddChange} required className="w-full px-3 py-2 bg-showroom-navy border border-slate-600 text-chalk font-mono rounded-sm focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass outline-none transition" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Model</label>
-                <input type="text" name="model" value={newVehicle.model} onChange={handleAddChange} required className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" />
+                <label className="block text-xs font-mono font-medium text-chalk/70 uppercase tracking-wider mb-1">Model</label>
+                <input type="text" name="model" value={newVehicle.model} onChange={handleAddChange} required className="w-full px-3 py-2 bg-showroom-navy border border-slate-600 text-chalk font-mono rounded-sm focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass outline-none transition" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Category</label>
-                <input type="text" name="category" value={newVehicle.category} onChange={handleAddChange} required className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" />
+                <label className="block text-xs font-mono font-medium text-chalk/70 uppercase tracking-wider mb-1">Category</label>
+                <input type="text" name="category" value={newVehicle.category} onChange={handleAddChange} required className="w-full px-3 py-2 bg-showroom-navy border border-slate-600 text-chalk font-mono rounded-sm focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass outline-none transition" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Price</label>
-                  <input type="number" name="price" value={newVehicle.price} onChange={handleAddChange} required min="0.01" step="0.01" className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" />
+                  <label className="block text-xs font-mono font-medium text-chalk/70 uppercase tracking-wider mb-1">Price</label>
+                  <input type="number" name="price" value={newVehicle.price} onChange={handleAddChange} required min="0.01" step="0.01" className="w-full px-3 py-2 bg-showroom-navy border border-slate-600 text-chalk font-mono rounded-sm focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass outline-none transition" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Quantity</label>
-                  <input type="number" name="quantity" value={newVehicle.quantity} onChange={handleAddChange} required min="0" className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" />
+                  <label className="block text-xs font-mono font-medium text-chalk/70 uppercase tracking-wider mb-1">Quantity</label>
+                  <input type="number" name="quantity" value={newVehicle.quantity} onChange={handleAddChange} required min="0" className="w-full px-3 py-2 bg-showroom-navy border border-slate-600 text-chalk font-mono rounded-sm focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass outline-none transition" />
                 </div>
               </div>
               
               <button
                 type="submit"
                 disabled={addLoading}
-                className={`w-full py-2.5 mt-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition ${addLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`w-full py-2.5 mt-2 bg-dealer-brass text-showroom-navy rounded-sm font-mono font-bold uppercase tracking-wide hover:brightness-110 transition ${addLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
                 {addLoading ? 'Adding...' : 'Add Vehicle'}
               </button>
@@ -343,12 +343,12 @@ const Admin = () => {
         <div className="lg:col-span-3">
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-dealer-brass"></div>
             </div>
           ) : vehicles.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-12 text-center">
-              <h3 className="text-xl font-semibold text-slate-700 mb-2">Inventory is empty</h3>
-              <p className="text-slate-500">Add a vehicle using the form to get started.</p>
+            <div className="bg-warehouse-slate rounded-none border border-slate-700 p-12 text-center">
+              <h3 className="text-xl font-mono font-bold text-chalk mb-2">Inventory is empty</h3>
+              <p className="text-slate-400">Add a vehicle using the form to get started.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

@@ -55,22 +55,22 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-showroom-navy font-sans p-4">
+      <div className="w-full max-w-md bg-warehouse-slate rounded-2xl shadow-2xl p-8 space-y-6 border border-slate-700">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-slate-900">Create Account</h1>
-          <p className="text-slate-500 mt-2">Join us to manage inventory</p>
+          <h1 className="text-3xl font-display font-bold text-chalk tracking-wide">Create Account</h1>
+          <p className="text-slate-400 mt-2">Join us to manage inventory</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-100">
+          <div className="bg-sold-red/10 text-sold-red p-3 rounded-lg text-sm border border-sold-red/20">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="name">
+            <label className="block text-sm font-medium text-chalk mb-1" htmlFor="name">
               Full Name
             </label>
             <input
@@ -78,14 +78,14 @@ const Register = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+              className="w-full px-4 py-2 bg-showroom-navy border border-slate-600 rounded-lg focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass text-chalk outline-none transition-colors"
               placeholder="John Doe"
               disabled={isLoading}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="email">
+            <label className="block text-sm font-medium text-chalk mb-1" htmlFor="email">
               Email Address
             </label>
             <input
@@ -93,14 +93,14 @@ const Register = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+              className="w-full px-4 py-2 bg-showroom-navy border border-slate-600 rounded-lg focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass text-chalk outline-none transition-colors"
               placeholder="you@example.com"
               disabled={isLoading}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="password">
+            <label className="block text-sm font-medium text-chalk mb-1" htmlFor="password">
               Password
             </label>
             <input
@@ -108,7 +108,7 @@ const Register = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+              className="w-full px-4 py-2 bg-showroom-navy border border-slate-600 rounded-lg focus:ring-2 focus:ring-dealer-brass focus:border-dealer-brass text-chalk outline-none transition-colors"
               placeholder="••••••••"
               disabled={isLoading}
             />
@@ -117,7 +117,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-2.5 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all flex items-center justify-center ${
+            className={`w-full py-2.5 px-4 bg-dealer-brass text-showroom-navy rounded-lg font-bold hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-dealer-brass focus:ring-offset-2 focus:ring-offset-warehouse-slate transition-all flex items-center justify-center ${
               isLoading ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >
@@ -135,9 +135,9 @@ const Register = () => {
           </button>
         </form>
 
-        <p className="text-center text-sm text-slate-600">
+        <p className="text-center text-sm text-slate-400">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline transition-colors">
+          <Link to="/login" className="text-dealer-brass hover:text-white font-medium hover:underline transition-colors">
             Sign in
           </Link>
         </p>
