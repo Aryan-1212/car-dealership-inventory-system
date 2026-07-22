@@ -35,6 +35,11 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
   const handleRestockSubmit = (e) => {
     e.preventDefault();
     if (!restockAmount || Number(restockAmount) <= 0) return;
+    
+    if (!window.confirm(`Are you sure you want to add ${restockAmount} unit(s) to the current stock?`)) {
+      return;
+    }
+    
     onRestock(vehicle.id, restockAmount, setRestockLoading, setRestockError, () => setRestockAmount(''));
   };
 
