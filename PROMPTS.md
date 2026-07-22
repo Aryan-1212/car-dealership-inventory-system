@@ -309,3 +309,17 @@ Scenarios:
 5. After deletion, the vehicle no longer appears in GET /api/vehicles.
 
 # Prompt 18
+Implement only the minimum code required to make the Delete Vehicle
+tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization (requireAdmin
+  middleware).
+- Do not change existing API behavior.
+- Do not refactor.
+- Return 404 if the id doesn't exist.
+- Return 200 or 204 on successful deletion.
+- Return only the files that need to change.
+
+# Prompt 19

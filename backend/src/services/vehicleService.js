@@ -90,3 +90,17 @@ export const updateVehicle = async (id, updateData) => {
 
     return formatVehicleResponse(vehicle);
 };
+
+export const deleteVehicle = async (id) => {
+    if (!mongoose.isValidObjectId(id)) {
+        throw new AppError("Vehicle not found", 404);
+    }
+
+    const vehicle = await Vehicle.findByIdAndDelete(id);
+
+    if (!vehicle) {
+        throw new AppError("Vehicle not found", 404);
+    }
+
+    return { message: "Vehicle deleted successfully" };
+};
