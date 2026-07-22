@@ -31,3 +31,8 @@ export const createVehicle = async (vehicleData) => {
 
     return formatVehicleResponse(vehicle);
 };
+
+export const getAllVehicles = async () => {
+    const vehicles = await Vehicle.find();
+    return vehicles.map(formatVehicleResponse);
+};
