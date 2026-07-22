@@ -434,3 +434,59 @@ Requirements:
 - Return only the files that should change.
 
 # Prompt 26
+I'm building the frontend for a Car Dealership Inventory System as
+part of a TDD assessment. This is a React (Vite) + Tailwind CSS SPA
+consuming an existing Express + MongoDB backend.
+
+Backend API (already built and tested):
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/vehicles (protected)
+- GET /api/vehicles/search?make=&model=&category=&minPrice=&maxPrice=
+- POST /api/vehicles (protected)
+- PUT /api/vehicles/:id (protected)
+- DELETE /api/vehicles/:id (protected, admin only)
+- POST /api/vehicles/:id/purchase (protected)
+- POST /api/vehicles/:id/restock (protected, admin only)
+
+Auth: JWT returned on login/register, expected as
+"Authorization: Bearer <token>" on protected routes.
+User object has a "role" field: "admin" or "customer".
+
+Architecture rules:
+- Keep components in src/pages and src/components.
+- API calls go through a single axios instance in src/api/client.js.
+- Auth state (token, user) lives in a React Context, not localStorage.
+- Style with Tailwind only — no other CSS frameworks.
+- Do not introduce Redux, Zustand, or other state libraries — Context
+  is sufficient for this project.
+- Generate only what I ask for in each prompt. Do not implement
+  future pages unless explicitly asked.
+
+# Prompt 27
+Build the LoginPage and RegisterPage components using the existing
+AuthContext and react-router-dom.
+
+Requirements:
+- LoginPage: email + password fields. On submit, call
+  POST /api/auth/login via the axios client, then call
+  context's login(token, user) with the response, then redirect to
+  /dashboard.
+- RegisterPage: name, email, password fields. On submit, call
+  POST /api/auth/register, then log the user in the same way and
+  redirect to /dashboard.
+- Both: show a clear error message on failure (e.g. "Invalid email
+  or password" for login, "Email already registered" for register —
+  read the actual error message from the backend response if
+  available, otherwise a sensible fallback).
+- Both: disable the submit button and show a loading indicator while
+  the request is in flight.
+- Basic client-side validation: required fields, valid email format.
+- Style with Tailwind — centered card layout, consistent with each
+  other.
+- Do not modify AuthContext, client.js, or routing config.
+
+# Prompt 28
+plugin:vite:css] [postcss] postcss-import: D:\1 - Projects\incubyte-car-dealership\frontend\node_modules\tailwindcss\lib\index.js:1:1: Unknown word "use strict"
+
+Solve this error while maintaining all the current code and without breaking anything
