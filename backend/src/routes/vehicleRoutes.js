@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/search", authenticate, searchVehicles);
 router.post("/", authenticate, requireAdmin, createVehicle);
 router.get("/", authenticate, getAllVehicles);
-router.put("/:id", authenticate, updateVehicle);
+router.put("/:id", authenticate, requireAdmin, updateVehicle);
 router.delete("/:id", authenticate, requireAdmin, deleteVehicle);
 router.post("/:id/purchase", authenticate, purchaseVehicle);
 router.post("/:id/restock", authenticate, requireAdmin, restockVehicle);

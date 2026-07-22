@@ -304,7 +304,7 @@ describe("PUT /api/vehicles/:id", () => {
         createdVehicleId = createRes.body.vehicle.id;
     });
 
-    it("should allow an authenticated user to update an existing vehicle's fields and receive the updated vehicle back", async () => {
+    it("should allow an admin to update an existing vehicle's fields and receive the updated vehicle back", async () => {
         const updateData = {
             make: "Toyota",
             model: "Camry Hybrid",
@@ -315,13 +315,22 @@ describe("PUT /api/vehicles/:id", () => {
 
         const response = await request(app)
             .put(`/api/vehicles/${createdVehicleId}`)
-            .set("Authorization", `Bearer ${userToken}`)
+            .set("Authorization", `Bearer ${adminToken}`)
             .send(updateData);
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty("vehicle");
         expect(response.body.vehicle).toMatchObject(updateData);
         expect(response.body.vehicle.id).toBe(createdVehicleId);
+    });
+
+    it("should return 403 if a non-admin authenticated user attempts to update a vehicle", async () => {
+        const response = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ price: 30000 });
+
+        expect(response.statusCode).toBe(403);
     });
 
     it("should return 401 if request is sent without JWT token", async () => {
@@ -340,7 +349,7 @@ describe("PUT /api/vehicles/:id", () => {
 
         const response = await request(app)
             .put(`/api/vehicles/${nonExistentId}`)
-            .set("Authorization", `Bearer ${userToken}`)
+            .set("Authorization", `Bearer ${adminToken}`)
             .send(updateData);
 
         expect(response.statusCode).toBe(404);
@@ -349,14 +358,14 @@ describe("PUT /api/vehicles/:id", () => {
     it("should return 400 if payload is invalid (e.g., negative price or negative quantity)", async () => {
         const invalidPriceRes = await request(app)
             .put(`/api/vehicles/${createdVehicleId}`)
-            .set("Authorization", `Bearer ${userToken}`)
+            .set("Authorization", `Bearer ${adminToken}`)
             .send({ price: -500 });
 
         expect(invalidPriceRes.statusCode).toBe(400);
 
         const invalidQuantityRes = await request(app)
             .put(`/api/vehicles/${createdVehicleId}`)
-            .set("Authorization", `Bearer ${userToken}`)
+            .set("Authorization", `Bearer ${adminToken}`)
             .send({ quantity: -2 });
 
         expect(invalidQuantityRes.statusCode).toBe(400);
@@ -367,7 +376,7 @@ describe("PUT /api/vehicles/:id", () => {
 
         const response = await request(app)
             .put(`/api/vehicles/${createdVehicleId}`)
-            .set("Authorization", `Bearer ${userToken}`)
+            .set("Authorization", `Bearer ${adminToken}`)
             .send(partialUpdateData);
 
         expect(response.statusCode).toBe(200);

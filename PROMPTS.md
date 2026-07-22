@@ -516,3 +516,5 @@ Requirements:
 - Style with Tailwind — clean card grid, responsive across mobile
   and desktop.
 - Do not modify AuthContext, client.js, or the Login/Register pages.
+
+# Prompt 30
