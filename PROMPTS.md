@@ -120,3 +120,26 @@ Scenarios:
 5. Price must be greater than 0.
 6. Quantity cannot be negative.
 7. Response contains id, make, model, category, price, and quantity.
+
+# Prompt 6
+
+Implement only the minimum code required to make the Create Vehicle tests pass.
+
+Requirements:
+- Reuse the existing architecture.
+- Do not modify authentication unless required.
+- Do not refactor.
+- Return only the files that need to change.
+
+# Prompt 7
+
+Review the Create Vehicle implementation.
+
+Requirements:
+- Keep all tests passing.
+- Do not change API responses.
+- Do not change the architecture.
+- Improve readability and remove duplication only.
+- Return only the modified files.
+
+# Prompt 8
