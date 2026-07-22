@@ -217,3 +217,27 @@ Scenarios:
 7. Request without JWT returns 401.
 
 # Prompt 12
+Implement only the minimum code required to make the Search Vehicles tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization.
+- Do not change existing API behavior.
+- Do not refactor.
+- Do not add pagination, sorting, or any extra features.
+- Use query parameters for filtering.
+- Return only the files that need to change.
+
+# Prompt 13
+Review the Search Vehicles implementation and suggest a refactor.
+
+Requirements:
+- Keep all existing tests passing.
+- Do not change the API response format or status codes.
+- Do not change the route or query parameter names.
+- Do not introduce new architecture (repositories, validators, etc.).
+- Improve readability and reduce duplication in the query-building
+  logic only.
+- Return only the files that should change.
+
+# Prompt 14
