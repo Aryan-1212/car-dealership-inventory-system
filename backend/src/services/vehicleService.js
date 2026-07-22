@@ -108,3 +108,22 @@ export const deleteVehicle = async (id) => {
 
     return { message: "Vehicle deleted successfully" };
 };
+
+export const purchaseVehicle = async (id) => {
+    validateObjectId(id);
+
+    const vehicleExists = await Vehicle.findById(id);
+    ensureVehicleExists(vehicleExists);
+
+    const vehicle = await Vehicle.findOneAndUpdate(
+        { _id: id, quantity: { $gt: 0 } },
+        { $inc: { quantity: -1 } },
+        { returnDocument: "after" }
+    );
+
+    if (!vehicle) {
+        throw new AppError("Vehicle is out of stock", 409);
+    }
+
+    return formatVehicleResponse(vehicle);
+};

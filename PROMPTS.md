@@ -354,3 +354,20 @@ Scenarios:
 4. Request without JWT returns 401.
 
 # Prompt 21
+Implement only the minimum code required to make the Purchase Vehicle
+tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization.
+- Do not change existing API behavior.
+- Do not refactor.
+- Return 404 if the id doesn't exist.
+- Return 409 if quantity is already 0.
+- Decrement quantity by exactly 1 on success and return the updated
+  vehicle.
+- IMPORTANT: perform the check-and-decrement as a single atomic
+  MongoDB operation (e.g. findOneAndUpdate with a filter condition
+  like { _id: id, quantity: { $gt: 0 } }), not a separate find()
+  followed by a save() — a read-then-write here is a race condition.
+- Return only the files that need to change.

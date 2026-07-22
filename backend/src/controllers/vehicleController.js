@@ -3,7 +3,8 @@ import {
     getAllVehicles as getAllVehiclesService,
     searchVehicles as searchVehiclesService,
     updateVehicle as updateVehicleService,
-    deleteVehicle as deleteVehicleService
+    deleteVehicle as deleteVehicleService,
+    purchaseVehicle as purchaseVehicleService
 } from "../services/vehicleService.js";
 
 export const createVehicle = async (req, res, next) => {
@@ -59,6 +60,18 @@ export const deleteVehicle = async (req, res, next) => {
         const result = await deleteVehicleService(req.params.id);
 
         return res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const purchaseVehicle = async (req, res, next) => {
+    try {
+        const vehicle = await purchaseVehicleService(req.params.id);
+
+        return res.status(200).json({
+            vehicle
+        });
     } catch (error) {
         next(error);
     }
