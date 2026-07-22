@@ -57,3 +57,31 @@ Scenarios:
 2. Invalid password
 3. User not found
 4. Missing email/password
+
+# Prompt 3
+
+Implement only the minimum code required to make the Login tests pass.
+
+Project context:
+- Existing Express + MongoDB application.
+- Registration feature is already implemented.
+- Use the existing architecture:
+  - authService.js
+  - authController.js
+  - authRoutes.js
+  - User model
+  - AppError
+- Do not modify the registration functionality.
+- Do not refactor existing code.
+- Reuse existing patterns wherever possible.
+
+Requirements:
+- Implement POST /api/auth/login.
+- Return HTTP 200 with:
+  - JWT token
+  - user object (without passwordHash)
+- Return 400 for missing email or password.
+- Return 401 for invalid credentials (user not found or incorrect password).
+- Use bcrypt.compare() for password verification.
+- Use jsonwebtoken with process.env.JWT_SECRET.
+- Return only the files that need to be added or modified.
