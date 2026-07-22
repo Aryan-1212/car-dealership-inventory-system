@@ -515,6 +515,90 @@ describe("POST /api/vehicles/:id/purchase", () => {
     });
 });
 
+describe("POST /api/vehicles/:id/restock", () => {
+    let customerToken;
+    let adminToken;
+    let createdVehicleId;
+
+    beforeEach(async () => {
+        customerToken = await createAuthenticatedToken("customer");
+        adminToken = await createAuthenticatedToken("admin");
+
+        const createRes = await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send(sampleVehicle);
+
+        createdVehicleId = createRes.body.vehicle.id;
+    });
+
+    it("should allow an admin to restock an existing vehicle, increasing quantity by amount and returning updated vehicle", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ amount: 10 });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicle");
+        expect(response.body.vehicle.id).toBe(createdVehicleId);
+        expect(response.body.vehicle.quantity).toBe(15);
+    });
+
+    it("should return 403 if a non-admin authenticated user attempts to restock a vehicle", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .set("Authorization", `Bearer ${customerToken}`)
+            .send({ amount: 5 });
+
+        expect(response.statusCode).toBe(403);
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .send({ amount: 5 });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return 404 when restocking a non-existent vehicle id", async () => {
+        const nonExistentId = "60d5ec49f1b2c8118456789a";
+
+        const response = await request(app)
+            .post(`/api/vehicles/${nonExistentId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ amount: 5 });
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    it("should return 400 if restock amount is negative or zero", async () => {
+        const zeroAmountRes = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ amount: 0 });
+
+        expect(zeroAmountRes.statusCode).toBe(400);
+
+        const negativeAmountRes = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ amount: -5 });
+
+        expect(negativeAmountRes.statusCode).toBe(400);
+    });
+
+    it("should return 400 if restock amount is missing in the request body", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({});
+
+        expect(response.statusCode).toBe(400);
+    });
+});
+
+
 
 
 

@@ -381,3 +381,27 @@ Requirements:
 - Do not change the atomic update logic.
 - Improve readability and error handling only.
 - Return only the files that should change.
+
+# Prompt 23
+Write Jest + Supertest integration tests for the Restock Vehicle endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+POST /api/vehicles/:id/restock
+
+Body:
+{ "amount": <number> }
+
+Scenarios:
+1. Admin can restock an existing vehicle — quantity increases by
+   the given amount, updated vehicle is returned.
+2. Non-admin authenticated user returns 403.
+3. Request without JWT returns 401.
+4. Restocking a non-existent id returns 404.
+5. Negative or zero restock amount returns 400.
+6. Missing amount in the request body returns 400.
