@@ -98,3 +98,25 @@ Requirements:
 - Do not introduce Repository Pattern, DTOs, or unnecessary helper classes.
 - Improve readability, remove duplication, and improve maintainability only.
 - Return only the files that should change.
+
+# Prompt 5
+
+Write Jest + Supertest integration tests for the Create Vehicle endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+POST /api/vehicles
+
+Scenarios:
+1. Admin can create a vehicle successfully.
+2. Request without JWT returns 401.
+3. Non-admin user returns 403.
+4. Missing required fields returns 400.
+5. Price must be greater than 0.
+6. Quantity cannot be negative.
+7. Response contains id, make, model, category, price, and quantity.
