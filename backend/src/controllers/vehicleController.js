@@ -4,7 +4,8 @@ import {
     searchVehicles as searchVehiclesService,
     updateVehicle as updateVehicleService,
     deleteVehicle as deleteVehicleService,
-    purchaseVehicle as purchaseVehicleService
+    purchaseVehicle as purchaseVehicleService,
+    restockVehicle as restockVehicleService
 } from "../services/vehicleService.js";
 
 export const createVehicle = async (req, res, next) => {
@@ -68,6 +69,18 @@ export const deleteVehicle = async (req, res, next) => {
 export const purchaseVehicle = async (req, res, next) => {
     try {
         const vehicle = await purchaseVehicleService(req.params.id);
+
+        return res.status(200).json({
+            vehicle
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const restockVehicle = async (req, res, next) => {
+    try {
+        const vehicle = await restockVehicleService(req.params.id, req.body);
 
         return res.status(200).json({
             vehicle

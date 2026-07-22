@@ -130,3 +130,21 @@ export const purchaseVehicle = async (id) => {
 
     return formatVehicleResponse(updatedVehicle);
 };
+
+export const restockVehicle = async (id, { amount } = {}) => {
+    if (amount === undefined || typeof amount !== "number" || amount <= 0) {
+        throw new AppError("Restock amount must be a positive number", 400);
+    }
+
+    validateObjectId(id);
+
+    const vehicle = await Vehicle.findByIdAndUpdate(
+        id,
+        { $inc: { quantity: amount } },
+        { returnDocument: "after" }
+    );
+
+    ensureVehicleExists(vehicle);
+
+    return formatVehicleResponse(vehicle);
+};

@@ -405,3 +405,21 @@ Scenarios:
 4. Restocking a non-existent id returns 404.
 5. Negative or zero restock amount returns 400.
 6. Missing amount in the request body returns 400.
+
+# Prompt 24
+Implement only the minimum code required to make the Restock Vehicle
+tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization (requireAdmin
+  middleware).
+- Do not change existing API behavior.
+- Do not refactor.
+- Return 404 if the id doesn't exist.
+- Return 400 if amount is missing, zero, or negative.
+- Increase quantity by the given amount atomically (use $inc, not a
+  find-then-save) and return the updated vehicle.
+- Return only the files that need to change.
+
+# Prompt 25
