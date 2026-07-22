@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {
-    res.json({
+    res.status(200).json({
         message: "API Running"
     });
 });
