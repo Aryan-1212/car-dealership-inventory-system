@@ -323,3 +323,14 @@ Requirements:
 - Return only the files that need to change.
 
 # Prompt 19
+Review the Delete Vehicle implementation and suggest a refactor.
+
+Requirements:
+- Keep all tests passing.
+- Do not change API responses or the route.
+- Do not change the project architecture.
+- Improve readability and remove duplication only (e.g. shared
+  "find vehicle or 404" logic across update/delete, if applicable).
+- Return only the files that should change.
+
+# Prompt 20

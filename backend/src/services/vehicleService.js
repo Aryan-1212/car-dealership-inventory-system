@@ -11,6 +11,19 @@ const formatVehicleResponse = (vehicle) => ({
     quantity: vehicle.quantity
 });
 
+const validateObjectId = (id) => {
+    if (!mongoose.isValidObjectId(id)) {
+        throw new AppError("Vehicle not found", 404);
+    }
+};
+
+const ensureVehicleExists = (vehicle) => {
+    if (!vehicle) {
+        throw new AppError("Vehicle not found", 404);
+    }
+    return vehicle;
+};
+
 const validatePrice = (price) => {
     if (price !== undefined && (typeof price !== "number" || price <= 0)) {
         throw new AppError("Price must be greater than 0", 400);
@@ -72,10 +85,7 @@ export const searchVehicles = async (queryParams) => {
 };
 
 export const updateVehicle = async (id, updateData) => {
-    if (!mongoose.isValidObjectId(id)) {
-        throw new AppError("Vehicle not found", 404);
-    }
-
+    validateObjectId(id);
     validateVehicleUpdate(updateData);
 
     const vehicle = await Vehicle.findByIdAndUpdate(
@@ -84,23 +94,17 @@ export const updateVehicle = async (id, updateData) => {
         { returnDocument: "after", runValidators: true }
     );
 
-    if (!vehicle) {
-        throw new AppError("Vehicle not found", 404);
-    }
+    ensureVehicleExists(vehicle);
 
     return formatVehicleResponse(vehicle);
 };
 
 export const deleteVehicle = async (id) => {
-    if (!mongoose.isValidObjectId(id)) {
-        throw new AppError("Vehicle not found", 404);
-    }
+    validateObjectId(id);
 
     const vehicle = await Vehicle.findByIdAndDelete(id);
 
-    if (!vehicle) {
-        throw new AppError("Vehicle not found", 404);
-    }
+    ensureVehicleExists(vehicle);
 
     return { message: "Vehicle deleted successfully" };
 };
