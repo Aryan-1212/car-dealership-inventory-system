@@ -633,3 +633,30 @@ Requirements:
   looks broken).
 - Reuse the existing design tokens (showroom-navy, dealer-brass,
   chalk, font-display, font-sans) — don't introduce new colors.
+
+# Prompt 36
+Add toast notifications to the app using react-hot-toast (or
+sonner, whichever integrates more cleanly — your choice, but be
+consistent).
+
+Requirements:
+- Install and configure the toast provider once at the app root
+  (App.jsx), styled to match the existing design tokens (dealer-brass
+  for success, sold-red for errors, warehouse-slate background,
+  chalk text) rather than the library's default look.
+- Replace or supplement existing inline error messages with toasts
+  for these actions specifically:
+  - Login success ("Welcome back") / failure (existing error message)
+  - Register success ("Account created") / failure
+  - Purchase success ("Purchased [make] [model]") / failure (e.g.
+    out of stock — shouldn't normally fire since the button is
+    disabled, but handle it gracefully if it does)
+  - Admin: add vehicle success/failure
+  - Admin: update vehicle success/failure
+  - Admin: delete vehicle success (after confirmation) / failure
+  - Admin: restock success/failure
+- Keep existing inline validation errors (e.g. "email is required")
+  as inline field errors, not toasts — toasts are for action
+  outcomes, not form validation.
+- Don't change any API calls, state logic, or routing — this is
+  additive UI feedback only.

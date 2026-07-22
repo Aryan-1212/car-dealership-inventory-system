@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import client from '../api/client';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -16,7 +17,6 @@ const Dashboard = () => {
     maxPrice: '',
   });
   const [purchaseLoading, setPurchaseLoading] = useState(null);
-  const [purchaseErrors, setPurchaseErrors] = useState({});
 
   const fetchVehicles = async (params = {}) => {
     setLoading(true);
@@ -58,7 +58,6 @@ const Dashboard = () => {
 
   const handlePurchase = async (id) => {
     setPurchaseLoading(id);
-    setPurchaseErrors((prev) => ({ ...prev, [id]: null }));
 
     try {
       const response = await client.post(`/vehicles/${id}/purchase`);
@@ -68,9 +67,10 @@ const Dashboard = () => {
       setVehicles((prevVehicles) =>
         prevVehicles.map((v) => (v.id === id ? updatedVehicle : v))
       );
+      toast.success(`Purchased ${updatedVehicle.make} ${updatedVehicle.model}`);
     } catch (error) {
       const errorMsg = error.response?.data?.message || 'Failed to purchase';
-      setPurchaseErrors((prev) => ({ ...prev, [id]: errorMsg }));
+      toast.error(errorMsg);
     } finally {
       setPurchaseLoading(null);
     }
@@ -177,12 +177,6 @@ const Dashboard = () => {
                         {formatPrice(vehicle.price)}
                       </span>
                     </div>
-                    
-                    {purchaseErrors[vehicle.id] && (
-                      <div className="mt-4 text-sm font-mono font-medium text-sold-red bg-sold-red/10 p-3 rounded-sm border border-sold-red/20">
-                        {purchaseErrors[vehicle.id]}
-                      </div>
-                    )}
                   </div>
                   
                   {!isOutOfStock && (

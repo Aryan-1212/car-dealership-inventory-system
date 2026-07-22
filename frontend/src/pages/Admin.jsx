@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import client from '../api/client';
+import toast from 'react-hot-toast';
 
 const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -13,14 +14,11 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
     quantity: vehicle.quantity,
   });
   const [updateLoading, setUpdateLoading] = useState(false);
-  const [updateError, setUpdateError] = useState(null);
 
   const [delLoading, setDelLoading] = useState(false);
-  const [delError, setDelError] = useState(null);
 
   const [restockAmount, setRestockAmount] = useState('');
   const [restockLoading, setRestockLoading] = useState(false);
-  const [restockError, setRestockError] = useState(null);
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +27,7 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
       price: Number(editForm.price),
       quantity: Number(editForm.quantity),
     };
-    onUpdate(vehicle.id, payload, setUpdateLoading, setUpdateError, () => setIsEditing(false));
+    onUpdate(vehicle.id, payload, setUpdateLoading, () => setIsEditing(false));
   };
 
   const handleRestockSubmit = (e) => {
@@ -40,13 +38,12 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
       return;
     }
     
-    onRestock(vehicle.id, restockAmount, setRestockLoading, setRestockError, () => setRestockAmount(''));
+    onRestock(vehicle.id, restockAmount, setRestockLoading, () => setRestockAmount(''));
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditForm({ ...vehicle });
-    setUpdateError(null);
   };
 
   const formatPrice = (price) => 
@@ -56,11 +53,6 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
     return (
       <div className="bg-warehouse-slate border border-dealer-brass p-5 flex flex-col rounded-none shadow-xl">
         <h3 className="text-lg font-mono font-bold text-dealer-brass mb-3 uppercase">Edit Vehicle</h3>
-        {updateError && (
-          <div className="mb-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
-            {updateError}
-          </div>
-        )}
         <form onSubmit={handleEditSubmit} className="space-y-3 flex-1 flex flex-col">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="text" placeholder="Make" value={editForm.make} onChange={e => setEditForm({...editForm, make: e.target.value})} className="w-full px-3 py-1.5 text-sm font-mono bg-showroom-navy border border-slate-600 text-chalk rounded-sm focus:ring-1 focus:ring-dealer-brass outline-none" required />
@@ -94,17 +86,6 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
         
         <h3 className="text-xl font-bold text-chalk mt-3">{vehicle.make} {vehicle.model}</h3>
         <p className="text-lg font-mono text-dealer-brass mt-1">{formatPrice(vehicle.price)}</p>
-
-        {delError && (
-          <div className="mt-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
-            {delError}
-          </div>
-        )}
-        {restockError && (
-          <div className="mt-3 text-sm font-mono text-sold-red bg-sold-red/10 p-2 rounded-sm border border-sold-red/20">
-            {restockError}
-          </div>
-        )}
       </div>
 
       <div className="bg-showroom-navy/50 p-4">
@@ -138,7 +119,7 @@ const AdminVehicleCard = ({ vehicle, onUpdate, onDelete, onRestock }) => {
             Edit
           </button>
           <button 
-            onClick={() => onDelete(vehicle.id, setDelLoading, setDelError)}
+            onClick={() => onDelete(vehicle.id, setDelLoading)}
             disabled={delLoading || restockLoading}
             className="flex-1 py-1.5 px-3 bg-sold-red/10 text-sold-red border border-sold-red/20 text-sm font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-sold-red/20 transition disabled:opacity-70"
           >
@@ -168,8 +149,6 @@ const Admin = () => {
     make: '', model: '', category: '', price: '', quantity: ''
   });
   const [addLoading, setAddLoading] = useState(false);
-  const [addError, setAddError] = useState(null);
-  const [addSuccess, setAddSuccess] = useState(false);
 
   const fetchVehicles = async () => {
     setLoading(true);
@@ -195,8 +174,6 @@ const Admin = () => {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    setAddError(null);
-    setAddSuccess(false);
     setAddLoading(true);
 
     try {
@@ -207,53 +184,52 @@ const Admin = () => {
       };
       const res = await client.post('/vehicles', payload);
       setVehicles([...vehicles, res.data.vehicle]);
-      setAddSuccess(true);
       setNewVehicle({ make: '', model: '', category: '', price: '', quantity: '' });
-      setTimeout(() => setAddSuccess(false), 3000);
+      toast.success('Vehicle added successfully!');
     } catch (err) {
-      setAddError(err.response?.data?.message || 'Failed to add vehicle');
+      toast.error(err.response?.data?.message || 'Failed to add vehicle');
     } finally {
       setAddLoading(false);
     }
   };
 
-  const handleDelete = async (id, setDelLoading, setDelError) => {
+  const handleDelete = async (id, setDelLoading) => {
     if (!window.confirm('Are you sure you want to delete this vehicle?')) return;
     
     setDelLoading(true);
-    setDelError(null);
     try {
       await client.delete(`/vehicles/${id}`);
       setVehicles(prev => prev.filter(v => v.id !== id));
+      toast.success('Vehicle deleted successfully');
     } catch (err) {
-      setDelError(err.response?.data?.message || 'Failed to delete vehicle');
+      toast.error(err.response?.data?.message || 'Failed to delete vehicle');
       setDelLoading(false);
     }
   };
 
-  const handleUpdate = async (id, payload, setUpdateLoading, setUpdateError, exitEdit) => {
+  const handleUpdate = async (id, payload, setUpdateLoading, exitEdit) => {
     setUpdateLoading(true);
-    setUpdateError(null);
     try {
       const res = await client.put(`/vehicles/${id}`, payload);
       setVehicles(prev => prev.map(v => v.id === id ? res.data.vehicle : v));
+      toast.success('Vehicle updated successfully');
       exitEdit();
     } catch (err) {
-      setUpdateError(err.response?.data?.message || 'Failed to update vehicle');
+      toast.error(err.response?.data?.message || 'Failed to update vehicle');
     } finally {
       setUpdateLoading(false);
     }
   };
 
-  const handleRestock = async (id, amount, setRestockLoading, setRestockError, resetAmount) => {
+  const handleRestock = async (id, amount, setRestockLoading, resetAmount) => {
     setRestockLoading(true);
-    setRestockError(null);
     try {
       const res = await client.post(`/vehicles/${id}/restock`, { amount: Number(amount) });
       setVehicles(prev => prev.map(v => v.id === id ? res.data.vehicle : v));
+      toast.success(`Restocked ${amount} unit(s)`);
       resetAmount();
     } catch (err) {
-      setRestockError(err.response?.data?.message || 'Failed to restock vehicle');
+      toast.error(err.response?.data?.message || 'Failed to restock vehicle');
     } finally {
       setRestockLoading(false);
     }
@@ -292,17 +268,6 @@ const Admin = () => {
         <div className="lg:col-span-1">
           <div className="bg-warehouse-slate p-6 rounded-none border border-slate-600 shadow-xl sticky top-6">
             <h2 className="text-xl font-mono font-bold text-dealer-brass mb-4 uppercase">Add New Vehicle</h2>
-            
-            {addSuccess && (
-              <div className="mb-4 text-sm font-mono text-stock-green bg-stock-green/10 p-3 rounded-sm border border-stock-green/20">
-                Vehicle added successfully!
-              </div>
-            )}
-            {addError && (
-              <div className="mb-4 text-sm font-mono text-sold-red bg-sold-red/10 p-3 rounded-sm border border-sold-red/20">
-                {addError}
-              </div>
-            )}
 
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>

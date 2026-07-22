@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import client from '../api/client';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -41,9 +42,10 @@ const Login = () => {
       } else {
         navigate('/');
       }
+      toast.success('Welcome back');
     } catch (err) {
       const message = err.response?.data?.message || 'Invalid email or password. Please try again.';
-      setError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

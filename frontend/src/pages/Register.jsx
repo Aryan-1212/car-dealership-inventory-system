@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import client from '../api/client';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -46,9 +47,10 @@ const Register = () => {
       } else {
         navigate('/');
       }
+      toast.success('Account created');
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to register. Please try again.';
-      setError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

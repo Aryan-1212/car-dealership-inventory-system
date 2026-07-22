@@ -18,12 +18,14 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Limit requests from same API
-const limiter = rateLimit({
-    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-    windowMs: 15 * 60 * 1000,
-    message: "Too many requests from this IP, please try again in 15 minutes!"
-});
-app.use("/api", limiter);
+if (process.env.NODE_ENV !== "test") {
+    const limiter = rateLimit({
+        max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+        windowMs: 15 * 60 * 1000,
+        message: "Too many requests from this IP, please try again in 15 minutes!"
+    });
+    app.use("/api", limiter);
+}
 
 // Implement CORS
 const corsOptions = {
