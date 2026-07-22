@@ -518,3 +518,30 @@ Requirements:
 - Do not modify AuthContext, client.js, or the Login/Register pages.
 
 # Prompt 30
+Add test cases to the existing Create Vehicle and Update Vehicle test
+files: a non-admin authenticated user attempting POST /api/vehicles
+or PUT /api/vehicles/:id should now receive 403. Keep all existing
+admin-success test cases unchanged.
+
+# Prompt 31
+Build AdminPage using the existing AuthContext and axios client.
+
+Requirements:
+- Only reachable if the logged-in user's role is "admin" — if a
+  non-admin somehow lands on /admin, redirect to /dashboard.
+- A form to add a new vehicle: make, model, category, price,
+  quantity. On submit, call POST /api/vehicles, show success/error
+  feedback, and add the new vehicle to the visible list without a
+  full page reload.
+- A list of all existing vehicles, each with:
+  - An inline edit mode (or a small edit form) to update make,
+    model, category, price, quantity via PUT /api/vehicles/:id
+  - A delete button (with a confirmation step, e.g. "Are you sure?")
+    calling DELETE /api/vehicles/:id
+  - A small restock input (number) + button calling
+    POST /api/vehicles/:id/restock, updating that vehicle's quantity
+    in place without refetching everything
+- Show loading and error states for each action independently (e.g.
+  deleting one vehicle shouldn't block interacting with others).
+- Style with Tailwind, consistent with DashboardPage's visual style.
+- Do not modify AuthContext, client.js, DashboardPage, or routing.

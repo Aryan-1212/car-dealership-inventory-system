@@ -40,7 +40,12 @@ const Register = () => {
       const { token, user } = loginResponse.data;
       
       login(token, user);
-      navigate('/');
+      
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to register. Please try again.';
       setError(message);

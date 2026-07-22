@@ -35,7 +35,12 @@ const Login = () => {
       const { token, user } = response.data;
       
       login(token, user);
-      navigate('/');
+      
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       const message = err.response?.data?.message || 'Invalid email or password. Please try again.';
       setError(message);
