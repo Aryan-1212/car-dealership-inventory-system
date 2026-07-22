@@ -196,3 +196,24 @@ Focus on:
 Return only the files that need to change.
 
 # Prompt 11
+Write Jest + Supertest integration tests for the Search Vehicles endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+GET /api/vehicles/search
+
+Scenarios:
+1. Authenticated user can search by make.
+2. Authenticated user can search by model.
+3. Authenticated user can search by category.
+4. Authenticated user can search using a price range (minPrice and maxPrice).
+5. Authenticated user can combine multiple filters.
+6. Returns an empty array when no vehicles match.
+7. Request without JWT returns 401.
+
+# Prompt 12

@@ -189,3 +189,101 @@ describe("GET /api/vehicles", () => {
         );
     });
 });
+
+describe("GET /api/vehicles/search", () => {
+    let userToken;
+    let adminToken;
+
+    beforeEach(async () => {
+        userToken = await createAuthenticatedToken("customer");
+        adminToken = await createAuthenticatedToken("admin");
+
+        await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ make: "Toyota", model: "Camry", category: "Sedan", price: 25000, quantity: 5 });
+
+        await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ make: "Honda", model: "Civic", category: "Sedan", price: 22000, quantity: 3 });
+
+        await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ make: "Ford", model: "F-150", category: "Truck", price: 45000, quantity: 2 });
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?make=Toyota");
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should allow an authenticated user to search by make", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?make=Toyota")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toHaveLength(1);
+        expect(response.body.vehicles[0].make).toBe("Toyota");
+    });
+
+    it("should allow an authenticated user to search by model", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?model=Civic")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toHaveLength(1);
+        expect(response.body.vehicles[0].model).toBe("Civic");
+    });
+
+    it("should allow an authenticated user to search by category", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?category=Sedan")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toHaveLength(2);
+    });
+
+    it("should allow an authenticated user to search using a price range (minPrice and maxPrice)", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?minPrice=20000&maxPrice=30000")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toHaveLength(2);
+        expect(response.body.vehicles.every(v => v.price >= 20000 && v.price <= 30000)).toBe(true);
+    });
+
+    it("should allow an authenticated user to combine multiple filters", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?make=Toyota&category=Sedan&minPrice=20000&maxPrice=30000")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toHaveLength(1);
+        expect(response.body.vehicles[0].make).toBe("Toyota");
+        expect(response.body.vehicles[0].category).toBe("Sedan");
+    });
+
+    it("should return an empty array when no vehicles match the search criteria", async () => {
+        const response = await request(app)
+            .get("/api/vehicles/search?make=BMW")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicles");
+        expect(response.body.vehicles).toEqual([]);
+    });
+});
+
