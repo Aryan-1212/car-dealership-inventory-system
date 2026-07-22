@@ -262,3 +262,50 @@ Scenarios:
    returns 400.
 5. Partial update (e.g. only price) succeeds and leaves other
    fields unchanged.
+
+# Prompt 15
+Implement only the minimum code required to make the Update Vehicle
+tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization.
+- Do not change existing API behavior.
+- Do not refactor.
+- Support partial updates (only update fields present in the request
+  body).
+- Validate price >= 0 and quantity >= 0 if those fields are present
+  in the request.
+- Return 404 if the id doesn't exist.
+- Return only the files that need to change.
+
+# Prompt 16
+Review the Update Vehicle implementation and suggest a refactor.
+
+Requirements:
+- Keep all tests passing.
+- Do not change API responses or the route.
+- Improve readability and remove duplication only (e.g. shared
+  validation logic with the Create Vehicle endpoint, if applicable).
+- Return only the files that should change.
+
+# Prompt 17
+Write Jest + Supertest integration tests for the Delete Vehicle endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+DELETE /api/vehicles/:id
+
+Scenarios:
+1. Admin can delete an existing vehicle successfully.
+2. Non-admin authenticated user returns 403.
+3. Request without JWT returns 401.
+4. Deleting a non-existent id returns 404.
+5. After deletion, the vehicle no longer appears in GET /api/vehicles.
+
+# Prompt 18

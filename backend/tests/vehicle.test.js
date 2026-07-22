@@ -383,4 +383,69 @@ describe("PUT /api/vehicles/:id", () => {
     });
 });
 
+describe("DELETE /api/vehicles/:id", () => {
+    let customerToken;
+    let adminToken;
+    let createdVehicleId;
+
+    beforeEach(async () => {
+        customerToken = await createAuthenticatedToken("customer");
+        adminToken = await createAuthenticatedToken("admin");
+
+        const createRes = await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send(sampleVehicle);
+
+        createdVehicleId = createRes.body.vehicle.id;
+    });
+
+    it("should allow an admin to delete an existing vehicle successfully", async () => {
+        const response = await request(app)
+            .delete(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${adminToken}`);
+
+        expect(response.statusCode).toBe(200);
+    });
+
+    it("should return 403 if a non-admin authenticated user attempts to delete a vehicle", async () => {
+        const response = await request(app)
+            .delete(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        expect(response.statusCode).toBe(403);
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const response = await request(app)
+            .delete(`/api/vehicles/${createdVehicleId}`);
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return 404 when deleting a non-existent vehicle id", async () => {
+        const nonExistentId = "60d5ec49f1b2c8118456789a";
+
+        const response = await request(app)
+            .delete(`/api/vehicles/${nonExistentId}`)
+            .set("Authorization", `Bearer ${adminToken}`);
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    it("should ensure the vehicle no longer appears in GET /api/vehicles after deletion", async () => {
+        await request(app)
+            .delete(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${adminToken}`);
+
+        const getRes = await request(app)
+            .get("/api/vehicles")
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        expect(getRes.statusCode).toBe(200);
+        expect(getRes.body.vehicles).toHaveLength(0);
+    });
+});
+
+
 
