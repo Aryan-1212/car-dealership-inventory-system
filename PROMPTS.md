@@ -167,3 +167,32 @@ Scenarios:
    - quantity
 
 # Prompt 9
+Implement only the minimum code required to make the Get All Vehicles tests pass.
+
+Requirements:
+- Reuse the existing project architecture.
+- Reuse the existing authentication and authorization.
+- Do not change existing API behavior.
+- Do not refactor.
+- Return only the files that need to change.
+
+# Prompt 10
+Refactor the Get All Vehicles feature without changing its behavior.
+
+Requirements:
+- Keep all existing tests passing.
+- Do not change API responses or status codes.
+- Do not change the project architecture.
+- Do not add new features.
+- Improve readability and reduce duplication only.
+
+Focus on:
+1. Remove duplicated test setup (e.g., admin creation/login).
+2. Extract reusable test data (vehicle payloads).
+3. Improve test names where appropriate.
+4. Remove repeated literals and unnecessary code.
+5. Simplify the implementation if possible without changing functionality.
+
+Return only the files that need to change.
+
+# Prompt 11
