@@ -42,6 +42,12 @@ const validateQuantity = (quantity) => {
     }
 };
 
+const validateRestockAmount = (amount) => {
+    if (amount === undefined || typeof amount !== "number" || amount <= 0) {
+        throw new AppError("Restock amount must be a positive number", 400);
+    }
+};
+
 const validateVehicleInput = ({ make, model, category, price, quantity } = {}) => {
     if (!make || !model || !category || price === undefined || quantity === undefined) {
         throw new AppError("All required fields must be provided", 400);
@@ -132,10 +138,7 @@ export const purchaseVehicle = async (id) => {
 };
 
 export const restockVehicle = async (id, { amount } = {}) => {
-    if (amount === undefined || typeof amount !== "number" || amount <= 0) {
-        throw new AppError("Restock amount must be a positive number", 400);
-    }
-
+    validateRestockAmount(amount);
     validateObjectId(id);
 
     const vehicle = await Vehicle.findByIdAndUpdate(

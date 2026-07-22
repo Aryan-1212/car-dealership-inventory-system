@@ -423,3 +423,14 @@ Requirements:
 - Return only the files that need to change.
 
 # Prompt 25
+Review the Restock Vehicle implementation and suggest a refactor.
+
+Requirements:
+- Keep all tests passing.
+- Do not change API responses or the route.
+- Do not change the project architecture.
+- Improve readability only — e.g. shared validation with Purchase,
+  if applicable, without merging them into one endpoint.
+- Return only the files that should change.
+
+# Prompt 26
