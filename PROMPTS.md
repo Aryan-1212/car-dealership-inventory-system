@@ -371,3 +371,13 @@ Requirements:
   like { _id: id, quantity: { $gt: 0 } }), not a separate find()
   followed by a save() — a read-then-write here is a race condition.
 - Return only the files that need to change.
+
+# Prompt 22
+Review the Purchase Vehicle implementation and suggest a refactor.
+
+Requirements:
+- Keep all tests passing.
+- Do not change API responses or the route.
+- Do not change the atomic update logic.
+- Improve readability and error handling only.
+- Return only the files that should change.

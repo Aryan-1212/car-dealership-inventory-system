@@ -24,6 +24,12 @@ const ensureVehicleExists = (vehicle) => {
     return vehicle;
 };
 
+const findVehicleOrThrow = async (id) => {
+    validateObjectId(id);
+    const vehicle = await Vehicle.findById(id);
+    return ensureVehicleExists(vehicle);
+};
+
 const validatePrice = (price) => {
     if (price !== undefined && (typeof price !== "number" || price <= 0)) {
         throw new AppError("Price must be greater than 0", 400);
@@ -110,20 +116,17 @@ export const deleteVehicle = async (id) => {
 };
 
 export const purchaseVehicle = async (id) => {
-    validateObjectId(id);
+    await findVehicleOrThrow(id);
 
-    const vehicleExists = await Vehicle.findById(id);
-    ensureVehicleExists(vehicleExists);
-
-    const vehicle = await Vehicle.findOneAndUpdate(
+    const updatedVehicle = await Vehicle.findOneAndUpdate(
         { _id: id, quantity: { $gt: 0 } },
         { $inc: { quantity: -1 } },
         { returnDocument: "after" }
     );
 
-    if (!vehicle) {
+    if (!updatedVehicle) {
         throw new AppError("Vehicle is out of stock", 409);
     }
 
-    return formatVehicleResponse(vehicle);
+    return formatVehicleResponse(updatedVehicle);
 };
