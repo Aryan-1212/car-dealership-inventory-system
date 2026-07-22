@@ -60,4 +60,68 @@ describe("POST /api/auth/register", ()=>{
     //         });
 
     // });
-})
+});
+
+describe("POST /api/auth/login", () => {
+    it("should login successfully with valid credentials", async () => {
+        await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "Test User",
+                email: "test@example.com",
+                password: "password123"
+            });
+
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "test@example.com",
+                password: "password123"
+            });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("token");
+        expect(response.body).toHaveProperty("user");
+        expect(response.body.user.email).toBe("test@example.com");
+    });
+
+    it("should return 401 for invalid password", async () => {
+        await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "Test User",
+                email: "test@example.com",
+                password: "password123"
+            });
+
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "test@example.com",
+                password: "wrongpassword"
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return 401 if user is not found", async () => {
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "nonexistent@example.com",
+                password: "password123"
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return 400 if email or password is missing", async () => {
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "test@example.com"
+            });
+
+        expect(response.statusCode).toBe(400);
+    });
+});
