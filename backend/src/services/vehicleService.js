@@ -11,18 +11,29 @@ const formatVehicleResponse = (vehicle) => ({
     quantity: vehicle.quantity
 });
 
+const validatePrice = (price) => {
+    if (price !== undefined && (typeof price !== "number" || price <= 0)) {
+        throw new AppError("Price must be greater than 0", 400);
+    }
+};
+
+const validateQuantity = (quantity) => {
+    if (quantity !== undefined && (typeof quantity !== "number" || quantity < 0)) {
+        throw new AppError("Quantity cannot be negative", 400);
+    }
+};
+
 const validateVehicleInput = ({ make, model, category, price, quantity } = {}) => {
     if (!make || !model || !category || price === undefined || quantity === undefined) {
         throw new AppError("All required fields must be provided", 400);
     }
+    validatePrice(price);
+    validateQuantity(quantity);
+};
 
-    if (typeof price !== "number" || price <= 0) {
-        throw new AppError("Price must be greater than 0", 400);
-    }
-
-    if (typeof quantity !== "number" || quantity < 0) {
-        throw new AppError("Quantity cannot be negative", 400);
-    }
+const validateVehicleUpdate = ({ price, quantity } = {}) => {
+    validatePrice(price);
+    validateQuantity(quantity);
 };
 
 const buildSearchQuery = ({ make, model, category, minPrice, maxPrice } = {}) => {
@@ -65,17 +76,7 @@ export const updateVehicle = async (id, updateData) => {
         throw new AppError("Vehicle not found", 404);
     }
 
-    if (updateData.price !== undefined) {
-        if (typeof updateData.price !== "number" || updateData.price <= 0) {
-            throw new AppError("Price must be greater than 0", 400);
-        }
-    }
-
-    if (updateData.quantity !== undefined) {
-        if (typeof updateData.quantity !== "number" || updateData.quantity < 0) {
-            throw new AppError("Quantity cannot be negative", 400);
-        }
-    }
+    validateVehicleUpdate(updateData);
 
     const vehicle = await Vehicle.findByIdAndUpdate(
         id,
