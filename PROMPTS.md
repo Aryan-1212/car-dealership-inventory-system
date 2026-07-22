@@ -489,4 +489,30 @@ Requirements:
 # Prompt 28
 plugin:vite:css] [postcss] postcss-import: D:\1 - Projects\incubyte-car-dealership\frontend\node_modules\tailwindcss\lib\index.js:1:1: Unknown word "use strict"
 
-Solve this error while maintaining all the current code and without breaking anything
+Solve this tailwindcss configuration error while maintaining all the current code and without breaking anything
+
+# Prompt 29
+
+Build DashboardPage using the existing AuthContext and axios client.
+
+Requirements:
+- On mount, fetch all vehicles from GET /api/vehicles and display
+  them as a responsive grid of cards showing make, model, category,
+  price, and quantity.
+- Add a search/filter bar (fields: make, model, category, min price,
+  max price) that calls GET /api/vehicles/search with the
+  corresponding query params, and re-renders the list with results.
+  A "clear filters" action should return to the full unfiltered list.
+- Each vehicle card has a "Purchase" button that calls
+  POST /api/vehicles/:id/purchase. On success, update that vehicle's
+  quantity in the UI without refetching the whole list. On failure
+  (e.g. 409 out of stock), show an inline error on that card.
+- The Purchase button must be disabled and show "Out of Stock" when
+  quantity is 0 — this should update live the moment a purchase
+  brings quantity to 0, not just on page reload.
+- Show a loading state while the initial fetch is in progress, and
+  an empty state ("No vehicles found") when the list or a filtered
+  search returns nothing.
+- Style with Tailwind — clean card grid, responsive across mobile
+  and desktop.
+- Do not modify AuthContext, client.js, or the Login/Register pages.
