@@ -64,9 +64,9 @@ const validateVehicleUpdate = ({ price, quantity } = {}) => {
 const buildSearchQuery = ({ make, model, category, minPrice, maxPrice } = {}) => {
     const filter = {};
 
-    if (make) filter.make = make;
-    if (model) filter.model = model;
-    if (category) filter.category = category;
+    if (make) filter.make = { $regex: make, $options: "i" };
+    if (model) filter.model = { $regex: model, $options: "i" };
+    if (category) filter.category = { $regex: category, $options: "i" };
 
     if (minPrice !== undefined || maxPrice !== undefined) {
         filter.price = {};

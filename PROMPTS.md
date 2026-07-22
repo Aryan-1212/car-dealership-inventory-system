@@ -594,3 +594,10 @@ Specific direction:
   unchanged — this is a styling pass only.
 - Ensure text contrast is readable (chalk on navy/slate, not brass
   on brass) and everything stays responsive on mobile.
+
+# Prompt 34
+When I search SEDAN then it only shows one match while there are two.
+
+When I search hatchback it shows nothing while there is one.
+
+we need to recheck the searching module.
