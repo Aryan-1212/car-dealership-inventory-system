@@ -447,5 +447,74 @@ describe("DELETE /api/vehicles/:id", () => {
     });
 });
 
+describe("POST /api/vehicles/:id/purchase", () => {
+    let customerToken;
+    let adminToken;
+    let createdVehicleId;
+
+    beforeEach(async () => {
+        customerToken = await createAuthenticatedToken("customer");
+        adminToken = await createAuthenticatedToken("admin");
+
+        const createRes = await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ ...sampleVehicle, quantity: 2 });
+
+        createdVehicleId = createRes.body.vehicle.id;
+    });
+
+    it("should allow an authenticated user to purchase a vehicle with quantity > 0, decrease quantity by 1, and return the updated vehicle", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/purchase`)
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicle");
+        expect(response.body.vehicle.id).toBe(createdVehicleId);
+        expect(response.body.vehicle.quantity).toBe(1);
+    });
+
+    it("should return 409 out of stock if quantity is already 0 and not allow quantity to become negative", async () => {
+        const zeroStockRes = await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ ...sampleVehicle, quantity: 0 });
+
+        const zeroStockVehicleId = zeroStockRes.body.vehicle.id;
+
+        const response = await request(app)
+            .post(`/api/vehicles/${zeroStockVehicleId}/purchase`)
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        expect(response.statusCode).toBe(409);
+
+        const getRes = await request(app)
+            .get("/api/vehicles")
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        const foundVehicle = getRes.body.vehicles.find(v => v.id === zeroStockVehicleId);
+        expect(foundVehicle.quantity).toBe(0);
+    });
+
+    it("should return 404 when purchasing a non-existent vehicle id", async () => {
+        const nonExistentId = "60d5ec49f1b2c8118456789a";
+
+        const response = await request(app)
+            .post(`/api/vehicles/${nonExistentId}/purchase`)
+            .set("Authorization", `Bearer ${customerToken}`);
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const response = await request(app)
+            .post(`/api/vehicles/${createdVehicleId}/purchase`);
+
+        expect(response.statusCode).toBe(401);
+    });
+});
+
+
 
 

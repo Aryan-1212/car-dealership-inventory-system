@@ -334,3 +334,23 @@ Requirements:
 - Return only the files that should change.
 
 # Prompt 20
+Write Jest + Supertest integration tests for the Purchase Vehicle endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+POST /api/vehicles/:id/purchase
+
+Scenarios:
+1. Authenticated user can purchase a vehicle with quantity > 0,
+   quantity decreases by 1, and the updated vehicle is returned.
+2. Purchasing a vehicle with quantity already at 0 returns 409
+   (out of stock) and quantity does NOT go negative.
+3. Purchasing a non-existent id returns 404.
+4. Request without JWT returns 401.
+
+# Prompt 21
