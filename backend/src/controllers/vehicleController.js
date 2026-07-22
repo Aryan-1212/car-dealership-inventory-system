@@ -1,7 +1,8 @@
 import {
     createVehicle as createVehicleService,
     getAllVehicles as getAllVehiclesService,
-    searchVehicles as searchVehiclesService
+    searchVehicles as searchVehiclesService,
+    updateVehicle as updateVehicleService
 } from "../services/vehicleService.js";
 
 export const createVehicle = async (req, res, next) => {
@@ -34,6 +35,18 @@ export const searchVehicles = async (req, res, next) => {
 
         return res.status(200).json({
             vehicles
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateVehicle = async (req, res, next) => {
+    try {
+        const vehicle = await updateVehicleService(req.params.id, req.body);
+
+        return res.status(200).json({
+            vehicle
         });
     } catch (error) {
         next(error);

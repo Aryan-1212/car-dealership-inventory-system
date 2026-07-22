@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Vehicle from "../models/Vehicle.js";
 import AppError from "../utils/AppError.js";
 
@@ -57,4 +58,34 @@ export const searchVehicles = async (queryParams) => {
     const filter = buildSearchQuery(queryParams);
     const vehicles = await Vehicle.find(filter);
     return vehicles.map(formatVehicleResponse);
+};
+
+export const updateVehicle = async (id, updateData) => {
+    if (!mongoose.isValidObjectId(id)) {
+        throw new AppError("Vehicle not found", 404);
+    }
+
+    if (updateData.price !== undefined) {
+        if (typeof updateData.price !== "number" || updateData.price <= 0) {
+            throw new AppError("Price must be greater than 0", 400);
+        }
+    }
+
+    if (updateData.quantity !== undefined) {
+        if (typeof updateData.quantity !== "number" || updateData.quantity < 0) {
+            throw new AppError("Quantity cannot be negative", 400);
+        }
+    }
+
+    const vehicle = await Vehicle.findByIdAndUpdate(
+        id,
+        { $set: updateData },
+        { returnDocument: "after", runValidators: true }
+    );
+
+    if (!vehicle) {
+        throw new AppError("Vehicle not found", 404);
+    }
+
+    return formatVehicleResponse(vehicle);
 };
