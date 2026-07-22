@@ -241,3 +241,24 @@ Requirements:
 - Return only the files that should change.
 
 # Prompt 14
+Write Jest + Supertest integration tests for the Update Vehicle endpoint.
+
+Requirements:
+- Follow the existing project architecture.
+- Reuse the existing authentication flow.
+- Do not implement application code.
+- Generate only the test file.
+
+Endpoint:
+PUT /api/vehicles/:id
+
+Scenarios:
+1. Authenticated user can update an existing vehicle's fields
+   (make, model, category, price, quantity) and receives the
+   updated vehicle back.
+2. Request without JWT returns 401.
+3. Updating a non-existent id returns 404.
+4. Invalid payload (e.g. negative price or negative quantity)
+   returns 400.
+5. Partial update (e.g. only price) succeeds and leaves other
+   fields unchanged.

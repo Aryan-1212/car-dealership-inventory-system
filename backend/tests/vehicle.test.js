@@ -287,3 +287,100 @@ describe("GET /api/vehicles/search", () => {
     });
 });
 
+describe("PUT /api/vehicles/:id", () => {
+    let userToken;
+    let adminToken;
+    let createdVehicleId;
+
+    beforeEach(async () => {
+        userToken = await createAuthenticatedToken("customer");
+        adminToken = await createAuthenticatedToken("admin");
+
+        const createRes = await request(app)
+            .post("/api/vehicles")
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send(sampleVehicle);
+
+        createdVehicleId = createRes.body.vehicle.id;
+    });
+
+    it("should allow an authenticated user to update an existing vehicle's fields and receive the updated vehicle back", async () => {
+        const updateData = {
+            make: "Toyota",
+            model: "Camry Hybrid",
+            category: "Sedan",
+            price: 28000,
+            quantity: 10
+        };
+
+        const response = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send(updateData);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicle");
+        expect(response.body.vehicle).toMatchObject(updateData);
+        expect(response.body.vehicle.id).toBe(createdVehicleId);
+    });
+
+    it("should return 401 if request is sent without JWT token", async () => {
+        const updateData = { price: 30000 };
+
+        const response = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .send(updateData);
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it("should return 404 when updating a non-existent vehicle id", async () => {
+        const nonExistentId = "60d5ec49f1b2c8118456789a";
+        const updateData = { price: 30000 };
+
+        const response = await request(app)
+            .put(`/api/vehicles/${nonExistentId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send(updateData);
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    it("should return 400 if payload is invalid (e.g., negative price or negative quantity)", async () => {
+        const invalidPriceRes = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ price: -500 });
+
+        expect(invalidPriceRes.statusCode).toBe(400);
+
+        const invalidQuantityRes = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ quantity: -2 });
+
+        expect(invalidQuantityRes.statusCode).toBe(400);
+    });
+
+    it("should allow a partial update (e.g. only price) and leave other fields unchanged", async () => {
+        const partialUpdateData = { price: 29000 };
+
+        const response = await request(app)
+            .put(`/api/vehicles/${createdVehicleId}`)
+            .set("Authorization", `Bearer ${userToken}`)
+            .send(partialUpdateData);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("vehicle");
+        expect(response.body.vehicle).toMatchObject({
+            id: createdVehicleId,
+            make: sampleVehicle.make,
+            model: sampleVehicle.model,
+            category: sampleVehicle.category,
+            price: 29000,
+            quantity: sampleVehicle.quantity
+        });
+    });
+});
+
+
