@@ -1,0 +1,15 @@
+import { registerUser } from "../services/authService.js";
+
+export const register = async (req, res) => {
+    try {
+        const user = await registerUser(req.body);
+
+        return res.status(201).json({
+            user
+        });
+    } catch (error) {
+        return res.status(error.statusCode || 500).json({
+            message: error.message
+        });
+    }
+};
