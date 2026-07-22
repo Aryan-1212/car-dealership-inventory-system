@@ -3,7 +3,6 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import mongoSanitize from "express-mongo-sanitize";
 import authRoutes from "./routes/authRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -35,9 +34,6 @@ app.use(cors(corsOptions));
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
-
-// Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
 
 
 app.get("/api/health", (req, res) => {
