@@ -77,16 +77,11 @@ The application will be running at `http://localhost:5173`.
 
 ## Screenshots
 
-*(Note: Ensure you add your screenshot image files to a `screenshots` folder and update these placeholder links)*
-
-![Login Page Split-Screen Layout](./screenshots/login.png)
-*Login page featuring the showroom blueprint illustration.*
-
-![Customer Dashboard](./screenshots/dashboard.png)
-*Customer showroom dashboard with active inventory search.*
-
-![Admin Dashboard](./screenshots/admin.png)
-*Utilitarian admin panel for managing the dealership lot.*
+![Application Screenshot 1](./screenshots/screenshot-1.png)
+![Application Screenshot 2](./screenshots/screenshot-2.png)
+![Application Screenshot 3](./screenshots/screenshot-3.png)
+![Application Screenshot 4](./screenshots/screenshot-4.png)
+![Application Screenshot 5](./screenshots/screenshot-5.png)
 
 ---
 
