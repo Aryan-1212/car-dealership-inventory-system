@@ -1,6 +1,6 @@
 import { registerUser } from "../services/authService.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     try {
         const user = await registerUser(req.body);
 
@@ -8,8 +8,6 @@ export const register = async (req, res) => {
             user
         });
     } catch (error) {
-        return res.status(error.statusCode || 500).json({
-            message: error.message
-        });
+        next(error);
     }
 };

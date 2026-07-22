@@ -1,19 +1,16 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
+import AppError from "../utils/AppError.js";
 
 export const registerUser = async ({ name, email, password }) => {
     if (!name || !email || !password) {
-        const error = new Error("All fields are required");
-        error.statusCode = 400;
-        throw error;
+        throw new AppError("All fields are required", 400);
     }
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-        const error = new Error("Email already exists");
-        error.statusCode = 409;
-        throw error;
+        throw new AppError("Email already exists", 409);
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
