@@ -601,3 +601,35 @@ When I search SEDAN then it only shows one match while there are two.
 When I search hatchback it shows nothing while there is one.
 
 we need to recheck the searching module.
+
+# Prompt 35
+Redesign LoginPage and RegisterPage as a split-screen layout:
+
+Left half (on desktop; full width on mobile, showcase panel hidden
+below sm breakpoint): the existing form, centered, on a chalk/white
+card background.
+
+Right half (desktop only): a showroom-navy panel containing:
+- An inline SVG illustration of a simple car silhouette rendered in
+  dealer-brass line strokes (not a filled shape — think blueprint/
+  line-art style, minimal detail, no need for a fully realistic car).
+  You can also add 2-3 faint background elements like circular price
+  tag shapes or a horizon line to suggest a showroom floor.
+- A short headline in font-display (e.g. "Find your next car"
+  on login, "Join the lot" on register — feel free to write
+  something better in the same tone) and one supporting line in
+  font-sans below it, in chalk color.
+- The illustration and text should be composed together, not just
+  stacked with default spacing — treat this as a small hero moment.
+
+Requirements:
+- Build the SVG inline in the component (no external image files or
+  URLs — this keeps it license-clean and offline-safe).
+- Keep all existing form logic, validation, and API calls completely
+  unchanged.
+- Fully responsive: on narrow viewports, the illustration panel
+  should hide entirely and the form should take the full width
+  (don't just shrink it — genuinely hide it, a squeezed illustration
+  looks broken).
+- Reuse the existing design tokens (showroom-navy, dealer-brass,
+  chalk, font-display, font-sans) — don't introduce new colors.
