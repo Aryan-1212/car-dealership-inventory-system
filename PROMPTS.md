@@ -660,3 +660,6 @@ Requirements:
   outcomes, not form validation.
 - Don't change any API calls, state logic, or routing — this is
   additive UI feedback only.
+
+# Prompt 37
+Show inventory summary to admin dashboard

@@ -235,6 +235,14 @@ const Admin = () => {
     }
   };
 
+  // Calculate Summary
+  const totalModels = vehicles.length;
+  const totalUnits = vehicles.reduce((sum, v) => sum + (v.quantity || 0), 0);
+  const totalValue = vehicles.reduce((sum, v) => sum + ((v.price || 0) * (v.quantity || 0)), 0);
+  const outOfStock = vehicles.filter(v => v.quantity === 0).length;
+
+  const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+
   if (!isAdmin) return null; // Avoid flicker while redirecting
 
   return (
@@ -263,6 +271,48 @@ const Admin = () => {
           </div>
         </div>
       </header>
+
+      {/* Inventory Summary */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-warehouse-slate/30 border border-slate-700/50 p-4 rounded-lg flex flex-col items-center sm:items-start text-center sm:text-left transition-colors hover:border-dealer-brass/50 hover:bg-warehouse-slate/50">
+          <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 uppercase tracking-wider mb-1 sm:mb-2 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 hidden sm:block">
+              <path fillRule="evenodd" d="M4.25 2A2.25 2.25 0 002 4.25v11.5A2.25 2.25 0 004.25 18h11.5A2.25 2.25 0 0018 15.75V4.25A2.25 2.25 0 0015.75 2H4.25zm4.03 6.28a.75.75 0 00-1.06-1.06L4.97 9.47a.75.75 0 000 1.06l2.25 2.25a.75.75 0 001.06-1.06L6.56 10l1.72-1.72zm4.5-1.06a.75.75 0 10-1.06 1.06L13.44 10l-1.72 1.72a.75.75 0 101.06 1.06l2.25-2.25a.75.75 0 000-1.06l-2.25-2.25z" clipRule="evenodd" />
+            </svg>
+            Total Models
+          </span>
+          <span className="text-2xl sm:text-3xl font-display font-bold text-chalk">{totalModels}</span>
+        </div>
+        <div className="bg-warehouse-slate/30 border border-slate-700/50 p-4 rounded-lg flex flex-col items-center sm:items-start text-center sm:text-left transition-colors hover:border-dealer-brass/50 hover:bg-warehouse-slate/50">
+          <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 uppercase tracking-wider mb-1 sm:mb-2 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 hidden sm:block">
+              <path d="M11.983 1.907a.75.75 0 00-1.292-.656l-8.5 9.5A.75.75 0 002.75 12h6.572l-1.305 6.093a.75.75 0 001.292.656l8.5-9.5A.75.75 0 0017.25 8h-6.572l1.305-6.093z" />
+            </svg>
+            Total Units
+          </span>
+          <span className="text-2xl sm:text-3xl font-display font-bold text-chalk">{totalUnits}</span>
+        </div>
+        <div className="bg-warehouse-slate/30 border border-slate-700/50 p-4 rounded-lg flex flex-col items-center sm:items-start text-center sm:text-left transition-colors hover:border-dealer-brass/50 hover:bg-warehouse-slate/50">
+          <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 uppercase tracking-wider mb-1 sm:mb-2 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 hidden sm:block">
+              <path fillRule="evenodd" d="M1 4.25A2.25 2.25 0 013.25 2h13.5A2.25 2.25 0 0119 4.25v11.5A2.25 2.25 0 0116.75 18H3.25A2.25 2.25 0 011 15.75V4.25zM3.25 3.5c-.414 0-.75.336-.75.75v11.5c0 .414.336.75.75.75h13.5c.414 0 .75-.336.75-.75V4.25c0-.414-.336-.75-.75-.75H3.25z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M9 7.5A1.5 1.5 0 0110.5 6h1a1.5 1.5 0 011.5 1.5v3a1.5 1.5 0 01-1.5 1.5h-1A1.5 1.5 0 019 10.5v-3zM10.5 7.5v3h1v-3h-1z" clipRule="evenodd" />
+              <path d="M7.25 10.5a.75.75 0 01-.75.75h-1a.75.75 0 010-1.5h1a.75.75 0 01.75.75zM14.5 10.5a.75.75 0 01-.75.75h-1a.75.75 0 010-1.5h1a.75.75 0 01.75.75z" />
+            </svg>
+            Total Value
+          </span>
+          <span className="text-xl sm:text-3xl font-display font-bold text-dealer-brass">{formatCurrency(totalValue)}</span>
+        </div>
+        <div className="bg-warehouse-slate/30 border border-slate-700/50 p-4 rounded-lg flex flex-col items-center sm:items-start text-center sm:text-left transition-colors hover:border-dealer-brass/50 hover:bg-warehouse-slate/50">
+          <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 uppercase tracking-wider mb-1 sm:mb-2 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 hidden sm:block">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+            </svg>
+            Out of Stock
+          </span>
+          <span className={`text-2xl sm:text-3xl font-display font-bold ${outOfStock > 0 ? 'text-sold-red' : 'text-chalk'}`}>{outOfStock}</span>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         

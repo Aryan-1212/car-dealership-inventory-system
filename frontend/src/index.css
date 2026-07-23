@@ -8,3 +8,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E9ECF2; /* chalk */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1B2A47; /* warehouse-slate */
+  border-radius: 10px;
+  border: 2px solid #E9ECF2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A25D; /* dealer-brass */
+}
