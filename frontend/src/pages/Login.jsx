@@ -139,7 +139,62 @@ const Login = () => {
             </button>
           </form>
 
-          <p className="text-center text-sm font-medium text-warehouse-slate pt-2 border-t border-slate-100">
+          <div className="mt-8 relative rounded-xl border border-slate-200 bg-chalk/50 p-1">
+            <div className="absolute -top-3 left-4 bg-white px-2 py-0.5 border border-slate-200 rounded-md shadow-sm flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-dealer-brass">
+                <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 011.08.732V16.5a.75.75 0 01-1.5 0v-1.5c0-.184.093-.35.244-.45l.042-.02a.75.75 0 01-1.08-.733v-1.428l.708-2.836a.75.75 0 00-1.063-.853l-.041.021a.75.75 0 11-.75-1.299zM12 8.25a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clipRule="evenodd" />
+              </svg>
+              <span className="font-mono text-[10px] font-bold text-showroom-navy uppercase tracking-widest">Demo Access</span>
+            </div>
+            
+            <div className="pt-3 pb-1 px-1 flex flex-col gap-1.5">
+              <button 
+                type="button"
+                onClick={() => {setEmail('admin@gmail.com'); setPassword('admin1234');}}
+                className="group flex items-center justify-between p-3 rounded-lg bg-white border border-slate-100 hover:border-dealer-brass hover:shadow-md transition-all text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-showroom-navy text-dealer-brass flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-showroom-navy">Administrator</h3>
+                    <p className="text-xs font-mono text-warehouse-slate mt-0.5">admin@gmail.com</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 group-hover:text-dealer-brass transition-colors mb-1 hidden sm:block">Click to auto-fill</span>
+                  <span className="text-xs font-mono font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 group-hover:border-dealer-brass/30 transition-colors">pass: admin1234</span>
+                </div>
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => {setEmail('customer@gmail.com'); setPassword('cust1234');}}
+                className="group flex items-center justify-between p-3 rounded-lg bg-white border border-slate-100 hover:border-dealer-brass hover:shadow-md transition-all text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-slate-100 text-showroom-navy flex items-center justify-center shrink-0 group-hover:bg-showroom-navy group-hover:text-chalk transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-showroom-navy">Customer</h3>
+                    <p className="text-xs font-mono text-warehouse-slate mt-0.5">customer@gmail.com</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 group-hover:text-dealer-brass transition-colors mb-1 hidden sm:block">Click to auto-fill</span>
+                  <span className="text-xs font-mono font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 group-hover:border-dealer-brass/30 transition-colors">pass: cust1234</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <p className="text-center text-sm font-medium text-warehouse-slate pt-4 border-t border-slate-100 mt-4">
             Don't have an account?{' '}
             <Link to="/register" className="text-dealer-brass hover:text-showroom-navy font-bold hover:underline transition-colors">
               Register here

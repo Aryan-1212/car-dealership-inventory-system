@@ -8,6 +8,17 @@ Customers can browse the showroom, view detailed specifications of available veh
 ## Live Application
 🔗 **[View the Live Application Here](https://car-dealership-psi-one.vercel.app/)**
 
+## Demo Credentials
+For testing purposes, you can use the following default credentials:
+
+**Admin:**
+- **Email:** `admin@gmail.com`
+- **Password:** `admin1234`
+
+**Customer:**
+- **Email:** `customer@gmail.com`
+- **Password:** `cust1234`
+
 ## Tech Stack
 - **Frontend**: React, Vite, TailwindCSS v3 (Custom Showroom Theme), Axios, React Router.
 - **Backend**: Node.js, Express.js (v5), MongoDB, Mongoose, JWT (JSON Web Tokens).
